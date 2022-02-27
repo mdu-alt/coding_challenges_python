@@ -12,12 +12,11 @@ def main():
     assert (count_increases(puzzle_input) == solution)
 
 
-def count_increases(arr: List[int]):
-    """Count the number of times a depth measurements increases (from the previous measurements)."""
+def count_increases(measurements: List[int]) -> int:
     increases = 0
-    previous = arr[0]
+    previous = measurements[0]
 
-    for elem in arr:
+    for elem in measurements:
         if elem > previous:
             increases += 1
         previous = elem

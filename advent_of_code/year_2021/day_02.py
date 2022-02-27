@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 """This module implements the 2nd day of 2021 Advent Of Code: 'Dive!'
 
@@ -12,12 +12,11 @@ def main():
     assert (calculate_position(puzzle_input) == solution)
 
 
-def calculate_position(instructions: List[str]):
-    """Calculate the height, depth, and product of both after executing all the instruction in input."""
-    (h, d) = (0, 0)
+def calculate_position(instructions: List[str]) -> Tuple[int, int, int]:
+    h, d = 0, 0
 
     for instruction in instructions:
-        (direction, value) = instruction.split()
+        direction, value = instruction.split()
         value = int(value)
 
         if direction == 'forward':

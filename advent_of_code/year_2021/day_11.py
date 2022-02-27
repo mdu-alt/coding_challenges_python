@@ -25,7 +25,6 @@ def main():
 
 
 def count_flashes(matrix: np.ndarray, cycles: int):
-    """Count the number of flashes over some cycles."""
     flashes = 0
 
     for _ in range(cycles):
@@ -40,8 +39,6 @@ def count_flashes(matrix: np.ndarray, cycles: int):
 
 
 def _flash_around(matrix: np.ndarray, x: int, y: int):
-    """Increment a cell's surrounding by one, and repeat the operation for any neighbor whose value is greater than 1
-    (BFS)."""
     flashes = 0
     q = queue.SimpleQueue()
 
