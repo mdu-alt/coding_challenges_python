@@ -16,10 +16,9 @@ def count_increases(measurements: List[int]) -> int:
     increases = 0
     previous = measurements[0]
 
-    for elem in measurements:
-        if elem > previous:
-            increases += 1
-        previous = elem
+    for val in measurements:
+        increases += val > previous
+        previous = val
 
     return increases
 

@@ -27,16 +27,17 @@ def main():
 
 def calculate_power_consumption(report: List[str]) -> int:
     report_size = len(report)
-    ones = np.zeros(len(report[0]), dtype=int)
+    ones_count = np.zeros(len(report[0]), dtype=int)
 
-    for line in report:
-        ones += np.array(list(line), dtype=int)
+    for row in report:
+        ones_count += np.array(list(row), dtype=int)
 
-    gamma_rate = np.vectorize(lambda x: 1 if x >= report_size // 2 else 0)(ones)
-    epsilon_rate = np.vectorize(lambda x: 1 if x == 0 else 0)(gamma_rate)
+    gamma_rate, epsilon_rate = 0, 0
 
-    gamma_rate = int(''.join(str(n) for n in gamma_rate), base=2)
-    epsilon_rate = int(''.join(str(n) for n in epsilon_rate), base=2)
+    for val in ones_count:
+        bit = val >= report_size // 2
+        gamma_rate = (gamma_rate << 1) + bit
+        epsilon_rate = (epsilon_rate << 1) + (1 - bit)
 
     return gamma_rate * epsilon_rate
 
