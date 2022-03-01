@@ -9,7 +9,7 @@ def main():
     puzzle_input = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
     solution = (15, 10, 150)  # h, d, h * d
 
-    assert (calculate_position(puzzle_input) == solution)
+    assert calculate_position(puzzle_input) == solution
 
 
 def calculate_position(instructions: List[str]) -> Tuple[int, int, int]:
