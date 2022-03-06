@@ -6,7 +6,10 @@ See https://adventofcode.com/2021/day/2"""
 
 
 def main():
-    puzzle_input = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
+    with open('example.txt') as f:
+        content = f.read().splitlines()
+
+    puzzle_input = content
     solution = (15, 10, 150)  # h, d, h * d
 
     assert calculate_position(puzzle_input) == solution
