@@ -1,2 +1,8 @@
 # JetBrains
 .idea/
+
+# Byte-compiled
+__pycache__/
+
+# pytest
+.pytest_cache/
