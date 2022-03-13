@@ -6,30 +6,50 @@ See https://adventofcode.com/2021/day/2"""
 
 
 def main():
-    with open('example.txt') as f:
-        content = f.read().splitlines()
+    puzzle_input = read_file('puzzle_input.txt')
 
-    puzzle_input = content
-    solution = (15, 10, 150)  # h, d, h * d
-
-    assert calculate_position(puzzle_input) == solution
+    print(part_1(puzzle_input), '== (horizontal, depth, horizontal*depth)')
+    print(part_2(puzzle_input), '== (horizontal, depth, horizontal*depth)')
 
 
-def calculate_position(instructions: List[str]) -> Tuple[int, int, int]:
-    h, d = 0, 0
+def part_1(instructions: List[str]) -> Tuple[int, int, int]:
+    h = d = 0
 
     for instruction in instructions:
-        direction, value = instruction.split()
-        value = int(value)
+        direction, unit = instruction.split()
+        unit = int(unit)
 
         if direction == 'forward':
-            h += value
+            h += unit
         elif direction == 'down':
-            d += value
+            d += unit
         elif direction == 'up':
-            d -= value
+            d -= unit
 
     return h, d, h * d
+
+
+def part_2(instructions: List[str]) -> Tuple[int, int, int]:
+    h = d = a = 0
+
+    for instruction in instructions:
+        direction, unit = instruction.split()
+        unit = int(unit)
+
+        if direction == 'forward':
+            h += unit
+            d += a * unit
+        elif direction == 'down':
+            a += unit
+        elif direction == 'up':
+            a -= unit
+
+    return h, d, h * d
+
+
+def read_file(filename: str) -> List[str]:
+    with open(filename) as f:
+        return f.read().splitlines()
 
 
 if __name__ == '__main__':
