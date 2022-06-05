@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import List
-
 
 class SinglyListNode:
     def __init__(self, value=None, next_node: SinglyListNode = None):
@@ -9,10 +7,14 @@ class SinglyListNode:
         self.next_node = next_node
 
     @staticmethod
-    def from_list(ll: List):
+    def from_list(ll: list):
         head = SinglyListNode()
-        for elem in ll:
-            head.next_node = SinglyListNode(elem)
+        current = head
+
+        for value in ll:
+            current.next_node = SinglyListNode(value)
+            current = current.next_node
+
         return head.next_node
 
     def __eq__(self, other: SinglyListNode):
@@ -26,6 +28,19 @@ class DoublyListNode:
         self.value = value
         self.prev_node = prev_node
         self.next_node = next_node
+
+    @staticmethod
+    def from_list(ll: list):
+        head = DoublyListNode()
+        current = head
+
+        for value in ll:
+            current.next_node = DoublyListNode(value)
+            if current.next_node.prev_node != head:
+                current.next_node.prev_node = current
+            current = current.next_node
+
+        return head.next_node
 
     @staticmethod
     def remove_node(old_node: DoublyListNode) -> None:
