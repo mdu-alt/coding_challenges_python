@@ -12,7 +12,7 @@ class CustomerLogger:
 
     The requirement is to implement these two functions:
       * ``log_customer()`` to track whenever a customer logs into the website,
-      * ``next_non_returning_customer()`` to return the customer ID:
+      * ``get_oldest_customer_for_email()`` to return the customer ID:
 
         * That hasn't logged in for the longest time, **AND**
         * Has logged in once and only once, **AND**
@@ -26,11 +26,11 @@ class CustomerLogger:
     >>> logger.log_customer('4')
     >>> logger.log_customer('2')
     >>> logger.log_customer('5')
-    >>> logger.next_non_returning_customer()
+    >>> logger.get_oldest_customer_for_email()
     '1'
-    >>> logger.next_non_returning_customer()
+    >>> logger.get_oldest_customer_for_email()
     '4'
-    >>> logger.next_non_returning_customer()
+    >>> logger.get_oldest_customer_for_email()
     '5'
     """
 
@@ -38,26 +38,30 @@ class CustomerLogger:
         self._head = DoublyListNode()
         self._tail = DoublyListNode()
         self._hashmap: Dict[str, DoublyListNode] = {}
-        self._emailed: Set[str] = set()
+        self._emailed_or_seen: Set[str] = set()
 
         self._head.next_node = self._tail
         self._tail.prev_node = self._head
 
     def log_customer(self, customer_id: str) -> None:
-        if customer_id in self._emailed:
+        if customer_id in self._emailed_or_seen:
             return
         elif customer_id in self._hashmap:
-            self._remove_customer_id(customer_id, self._hashmap[customer_id])
+            self._emailed_or_seen.add(customer_id)
+            DoublyListNode.remove_node(self._hashmap[customer_id])
+            self._hashmap.pop(customer_id, None)
         else:
             self._hashmap[customer_id] = self._insert_tail(DoublyListNode(customer_id))
 
-    def next_non_returning_customer(self) -> str:
+    def get_oldest_customer_for_email(self) -> str:
         if self._head.next_node == self._tail:
             return 'N/A'
 
         customer_id = self._head.next_node.value
-        self._emailed.add(customer_id)
-        self._remove_customer_id(customer_id, self._head.next_node)
+
+        self._emailed_or_seen.add(customer_id)
+        DoublyListNode.remove_node(self._head.next_node)
+        self._hashmap.pop(customer_id, None)
 
         return customer_id
 
@@ -69,10 +73,3 @@ class CustomerLogger:
         new_node.next_node = self._tail
 
         return new_node
-
-    def _remove_customer_id(self, customer_id: str, old_node: DoublyListNode) -> None:
-        old_node.prev_node.next_node = old_node.next_node
-        old_node.next_node.prev_node = old_node.prev_node
-
-        old_node.prev_node = old_node.next_node = None
-        self._hashmap.pop(customer_id, None)
