@@ -43,6 +43,17 @@ class DoublyListNode:
         return head.next_node
 
     @staticmethod
+    def insert_node(prev_node: DoublyListNode, new_node: DoublyListNode) -> DoublyListNode:
+        if prev_node.next_node:
+            prev_node.next_node.prev_node = new_node
+        new_node.next_node = prev_node.next_node
+
+        new_node.prev_node = prev_node
+        prev_node.next_node = new_node
+
+        return new_node
+
+    @staticmethod
     def remove_node(old_node: DoublyListNode) -> None:
         old_node.prev_node.next_node = old_node.next_node
         old_node.next_node.prev_node = old_node.prev_node

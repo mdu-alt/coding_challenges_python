@@ -51,7 +51,7 @@ class CustomerLogger:
             DoublyListNode.remove_node(self._hashmap[customer_id])
             self._hashmap.pop(customer_id, None)
         else:
-            self._hashmap[customer_id] = self._insert_tail(DoublyListNode(customer_id))
+            self._hashmap[customer_id] = DoublyListNode.insert_node(self._tail.prev_node, DoublyListNode(customer_id))
 
     def get_oldest_customer_for_email(self) -> str:
         if self._head.next_node == self._tail:
@@ -64,12 +64,3 @@ class CustomerLogger:
         self._hashmap.pop(customer_id, None)
 
         return customer_id
-
-    def _insert_tail(self, new_node: DoublyListNode) -> DoublyListNode:
-        new_node.prev_node = self._tail.prev_node
-        new_node.prev_node.next_node = new_node
-
-        self._tail.prev_node = new_node
-        new_node.next_node = self._tail
-
-        return new_node
