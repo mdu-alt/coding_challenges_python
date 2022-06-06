@@ -1,20 +1,25 @@
 from typing import List
 
 
-def fizz_buzz() -> List[str]:
+class FizzBuzz:
     """
-    Implements the "FizzBuzz" problem, for numbers 1 to 100 included (https://en.wikipedia.org/wiki/Fizz_buzz).
+    Implements the "FizzBuzz" problem, for numbers 1 to 100 included.
+
+    Reference: https://en.wikipedia.org/wiki/Fizz_buzz
     """
-    output: List[str] = []
 
-    for n in range(1, 101):
-        s = ''
+    @staticmethod
+    def compute() -> List[str]:
+        output = [''] * 100
 
-        if n % 3 == 0:
-            s += 'fizz'
-        if n % 5 == 0:
-            s += 'buzz'
+        for n in range(1, 101):
+            s = ''
 
-        output.append(s if len(s) else str(n))
+            if n % 3 == 0:
+                s += 'fizz'
+            if n % 5 == 0:
+                s += 'buzz'
 
-    return output
+            output[n - 1] = s if len(s) else str(n)
+
+        return output
