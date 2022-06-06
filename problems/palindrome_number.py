@@ -1,9 +1,9 @@
 class PalindromeNumber:
     """
-    Given an integer n, return True if n is a palindrome integer.
+    Given an integer ``n``, return ``True`` if ``n`` is a palindrome integer.
 
     Constraints:
-    * -2e31 <= n <= 2e31 - 1
+      * ``-2e31 <= n <= 2e31 - 1``
 
     Reference: https://leetcode.com/problems/palindrome-number/
     """
