@@ -1,7 +1,7 @@
 import sys
 
 from abc import abstractmethod, ABC
-from typing import List
+from typing import List, Optional
 
 
 class Iterator(ABC):
@@ -36,8 +36,8 @@ class MinIterator(Iterator):
     """
 
     def __init__(self, iterators: List[Iterator]):
-        self._min_index = None
         self._iterators = iterators
+        self._min_index = self._find_min()
 
     def has_next(self) -> bool:
         for iterator in self._iterators:
@@ -47,34 +47,33 @@ class MinIterator(Iterator):
         return False
 
     def next(self) -> int:
-        return self._iterators[self._find_min()].next()
+        self._assign_min_or_raise()
+        next_ = self._iterators[self._min_index].next()
+        self._min_index = self._find_min()
+
+        return next_
 
     def peek(self) -> int:
-        if not self.has_next():
+        if self._min_index is None:
+            self._assign_min_or_raise()
+
+        return self._iterators[self._min_index].peek()
+
+    def _assign_min_or_raise(self) -> None:
+        if (min_index := self._find_min()) is None:
             raise IndexError("Iterator is empty")
+        self._min_index = min_index
 
-        if self._min_index is not None:
-            return self._iterators[self._min_index].peek()
-        else:
-            return self._iterators[self._find_min()].peek()
-
-    def _find_min(self) -> int:
+    def _find_min(self) -> Optional[int]:
         """
-        Loop through all iterators and return the minimum elements.
+        Loop through all iterators and return the minimum element.
 
-        :raise IndexError: if iteration has no more elements.
-        :return: The index of the minimum element in the list of Iterators.
+        :return: The index of the minimum element in ``self._iterators``, ``None`` otherwise.
         """
         index, minimum = None, sys.maxsize
 
-        # Don't call ``self.has_next()`` before because we're looping the iterators just below, so we'll get the info
-        # about at that time.
         for i, iterator in enumerate(self._iterators):
             if iterator.has_next() and iterator.peek() <= minimum:
                 minimum, index = iterator.peek(), i
 
-        if index is None:
-            raise IndexError("Iterator is empty")
-
-        self._min_index = index
-        return self._min_index
+        return index
